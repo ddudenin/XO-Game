@@ -53,12 +53,12 @@ class GameViewController: UIViewController {
     
     func goToNextState() {
         if let player = self.referee.determineWinner() {
-            self.currentSate = WinnerGameState(winner: player, gameViewController: self)
+            self.currentSate = EndGameState(winner: player, gameViewController: self)
             return
         }
         
         if self.gameboard.getEmptyPositions().isEmpty {
-            self.currentSate = WinnerGameState(winner: nil, gameViewController: self)
+            self.currentSate = EndGameState(winner: nil, gameViewController: self)
             return
         }
 

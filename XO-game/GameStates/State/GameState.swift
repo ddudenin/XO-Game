@@ -139,7 +139,7 @@ class ComputerInputGameState: GameState {
     }
 }
 
-class WinnerGameState: GameState {
+class EndGameState: GameState {
     
     let winner: Player?
     
