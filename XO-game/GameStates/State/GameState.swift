@@ -81,6 +81,9 @@ class ComputerInputGameState: GameState {
     var position = GameboardPosition(column: 0, row: 0)
     
     func begin() {
+        self.gameViewController.firstPlayerTurnLabel.isHidden = true
+        self.gameViewController.secondPlayerTurnLabel.isHidden = false
+        
         let markView = OView()
         
         _ = minimax(gameboard: self.gameboard, player: .second)
@@ -138,34 +141,40 @@ class ComputerInputGameState: GameState {
 
 class WinnerGameState: GameState {
     
-    let winner: Player
+    let winner: Player?
     
     private unowned let gameViewController: GameViewController
     
     private(set) var isCompleted: Bool = false
     
-    init(winner: Player, gameViewController: GameViewController) {
+    init(winner: Player?, gameViewController: GameViewController) {
         self.winner = winner
         self.gameViewController = gameViewController
     }
     
     func begin() {
-        let name = self.getWinnerName()
-        
         self.gameViewController.firstPlayerTurnLabel.isHidden = true
         self.gameViewController.secondPlayerTurnLabel.isHidden = true
         
         self.gameViewController.winnerLabel.isHidden = false
-        self.gameViewController.winnerLabel.text = "Winner \(name) player"
+        self.gameViewController.winnerLabel.text = self.getWinnerName()
     }
     
     func addMark(at position: GameboardPosition) { }
     
     private func getWinnerName() -> String {
-        switch self.winner {
-        case .first: return "1st"
-        case .second: return "2nd"
+        if let player = self.winner {
+            var name = ""
+            switch player {
+            case .first: name = "1st player"
+            case .second: name = self.gameViewController.vsAI ?  "computer" : "2nd player"
+            }
+            
+            return "Winner \(name)"
+        } else {
+            return "Draw"
         }
+
     }
 }
 

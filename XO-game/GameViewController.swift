@@ -56,6 +56,11 @@ class GameViewController: UIViewController {
             self.currentSate = WinnerGameState(winner: player, gameViewController: self)
             return
         }
+        
+        if self.gameboard.getEmptyPositions().isEmpty {
+            self.currentSate = WinnerGameState(winner: nil, gameViewController: self)
+            return
+        }
 
         if (self.currentSate as? ComputerInputGameState) != nil {
             self.currentSate = PlayerInputGameState(
