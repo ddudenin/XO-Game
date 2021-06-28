@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A81B914268A256A000962A7 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81B913268A256A000962A7 /* GameState.swift */; };
+		0A81B916268A2D90000962A7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81B915268A2D90000962A7 /* HomeViewController.swift */; };
 		F874E4712224621100364CAE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F874E4702224621100364CAE /* AppDelegate.swift */; };
 		F874E4732224621100364CAE /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F874E4722224621100364CAE /* GameViewController.swift */; };
 		F874E4762224621100364CAE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F874E4742224621100364CAE /* Main.storyboard */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A81B913268A256A000962A7 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		0A81B915268A2D90000962A7 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F874E46D2224621100364CAE /* XO-game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XO-game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F874E4702224621100364CAE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F874E4722224621100364CAE /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -53,6 +57,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A81B911268A254B000962A7 /* GameStates */ = {
+			isa = PBXGroup;
+			children = (
+				0A81B912268A2555000962A7 /* State */,
+			);
+			path = GameStates;
+			sourceTree = "<group>";
+		};
+		0A81B912268A2555000962A7 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				0A81B913268A256A000962A7 /* GameState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
 		F874E4642224621100364CAE = {
 			isa = PBXGroup;
 			children = (
@@ -72,7 +92,9 @@
 		F874E46F2224621100364CAE /* XO-game */ = {
 			isa = PBXGroup;
 			children = (
+				0A81B911268A254B000962A7 /* GameStates */,
 				F874E4702224621100364CAE /* AppDelegate.swift */,
+				0A81B915268A2D90000962A7 /* HomeViewController.swift */,
 				F874E4722224621100364CAE /* GameViewController.swift */,
 				F874E4F02225DFF700364CAE /* Referee.swift */,
 				F874E4E62225CB3F00364CAE /* Models */,
@@ -195,7 +217,9 @@
 				F874E4E22225CABF00364CAE /* OView.swift in Sources */,
 				F874E4F32225E0B100364CAE /* GameboardSize.swift in Sources */,
 				F874E4E42225CB0700364CAE /* XView.swift in Sources */,
+				0A81B914268A256A000962A7 /* GameState.swift in Sources */,
 				F874E4DB2225C1AC00364CAE /* GameboardView.swift in Sources */,
+				0A81B916268A2D90000962A7 /* HomeViewController.swift in Sources */,
 				F874E4EF2225DE4500364CAE /* Player.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
