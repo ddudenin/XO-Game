@@ -104,14 +104,14 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ver-3t-0Pr">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="18.5"/>
-                                        <state key="normal" title="Против игрока" image="person.fill" catalog="system"/>
+                                        <state key="normal" title="Игра с двумя игроками" image="person.2.fill" catalog="system"/>
                                         <connections>
                                             <action selector="vsPlayerButtonHandler:" destination="W1a-l8-mt8" eventType="touchUpInside" id="1oR-dF-J6O"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJj-hl-DsW">
                                         <rect key="frame" x="0.0" y="38.5" width="335" height="18"/>
-                                        <state key="normal" title="Против компьютера" image="laptopcomputer" catalog="system"/>
+                                        <state key="normal" title="Игра против компьютера" image="laptopcomputer" catalog="system"/>
                                         <connections>
                                             <action selector="vsComputerButtonHandler:" destination="W1a-l8-mt8" eventType="touchUpInside" id="ecI-da-nhd"/>
                                         </connections>
@@ -136,6 +136,6 @@
     </scenes>
     <resources>
         <image name="laptopcomputer" catalog="system" width="128" height="73"/>
-        <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="person.2.fill" catalog="system" width="128" height="80"/>
     </resources>
 </document>

@@ -54,7 +54,7 @@ class PlayerInputGameState: GameState {
             markView = XView()
         case .second:
             markView = OView()
-
+            
         }
         
         self.gameView.placeMarkView(markView, at: position)
@@ -78,16 +78,12 @@ class ComputerInputGameState: GameState {
         self.gameViewController = gameViewController
     }
     
+    var position = GameboardPosition(column: 0, row: 0)
+    
     func begin() {
         let markView = OView()
         
-        var position: GameboardPosition
-        
-        repeat {
-            let row = Int.random(in: 0..<GameboardSize.rows)
-            let col = Int.random(in: 0..<GameboardSize.columns)
-            position = GameboardPosition(column: row, row: col)
-        } while !self.gameView.canPlaceMarkView(at: position)
+        _ = minimax(gameboard: self.gameboard, player: .second)
         
         self.gameView.placeMarkView(markView, at: position)
         self.gameboard.setPlayer(.second, at: position)
@@ -98,10 +94,50 @@ class ComputerInputGameState: GameState {
     }
     
     func addMark(at position: GameboardPosition) { }
+    
+    private func minimax(gameboard: Gameboard, player: Player) -> Int {
+        let referee = Referee(gameboard: gameboard)
+        let emptyCells = gameboard.getEmptyPositions()
+        
+        if let winner = referee.determineWinner() {
+            switch winner {
+            case .first: return 10
+            case .second: return -10
+            }
+        } else if emptyCells.isEmpty {
+            return 0
+        }
+        
+        var moves = [GameboardPosition : Int]()
+        
+        for cell in emptyCells {
+            gameboard.setPlayer(player, at: cell)
+            moves[cell] = minimax(gameboard: gameboard, player: player.next)
+            gameboard.setEmpty(at: cell)
+        }
+        
+        var bestScore = 0
+        switch player {
+        case .first:
+            bestScore = -10000;
+            for move in moves where move.value > bestScore {
+                self.position = move.key
+                bestScore = move.value
+            }
+        case .second:
+            bestScore = 10000;
+            for move in moves where move.value < bestScore {
+                self.position = move.key
+                bestScore = move.value
+            }
+        }
+        
+        return bestScore
+    }
 }
 
 class WinnerGameState: GameState {
-
+    
     let winner: Player
     
     private unowned let gameViewController: GameViewController
