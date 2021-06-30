@@ -93,7 +93,7 @@ class ComputerInputGameState: GameState {
         
         self.isCompleted = true
         
-        self.gameViewController.goToNextState()
+        self.gameViewController.goToNextStateAI()
     }
     
     func addMark(at position: GameboardPosition) { }

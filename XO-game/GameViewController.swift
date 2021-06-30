@@ -21,9 +21,9 @@ class GameViewController: UIViewController {
     
     var vsAI = true
     
-    var currentSate: GameState! {
+    private var currentState: GameState! {
         didSet {
-            self.currentSate.begin()
+            self.currentState.begin()
         }
     }
     
@@ -34,16 +34,16 @@ class GameViewController: UIViewController {
         
         self.gameboardView.onSelectPosition = { [weak self] position in
             guard let self = self else { return }
-            self.currentSate.addMark(at: position)
+            self.currentState.addMark(at: position)
             
-            if self.currentSate.isCompleted {
-                self.goToNextState()
+            if self.currentState.isCompleted {
+                self.vsAI ? self.goToNextStateAI() : self.goToNextState()
             }
         }
     }
     
     func goToFisrtState() {
-        self.currentSate = PlayerInputGameState(
+        self.currentState = PlayerInputGameState(
             player: .first,
             gameboard: self.gameboard,
             gameView: self.gameboardView,
@@ -53,40 +53,53 @@ class GameViewController: UIViewController {
     
     func goToNextState() {
         if let player = self.referee.determineWinner() {
-            self.currentSate = EndGameState(winner: player, gameViewController: self)
+            self.currentState = EndGameState(winner: player, gameViewController: self)
             return
         }
         
         if self.gameboard.getEmptyPositions().isEmpty {
-            self.currentSate = EndGameState(winner: nil, gameViewController: self)
+            self.currentState = EndGameState(winner: nil, gameViewController: self)
             return
         }
-
-        if (self.currentSate as? ComputerInputGameState) != nil {
-            self.currentSate = PlayerInputGameState(
+        
+        guard let playerInputState = self.currentState as? PlayerInputGameState else {
+            return
+        }
+        
+        let player = playerInputState.player
+        
+        self.currentState = PlayerInputGameState(
+            player: player.next,
+            gameboard: self.gameboard,
+            gameView: self.gameboardView,
+            gameViewController: self
+        )
+    }
+    
+    func goToNextStateAI() {
+        if let player = self.referee.determineWinner() {
+            self.currentState = EndGameState(winner: player, gameViewController: self)
+            return
+        }
+        
+        if self.gameboard.getEmptyPositions().isEmpty {
+            self.currentState = EndGameState(winner: nil, gameViewController: self)
+            return
+        }
+        
+        if (self.currentState as? ComputerInputGameState) != nil {
+            self.currentState = PlayerInputGameState(
                 player: .first,
                 gameboard: self.gameboard,
                 gameView: self.gameboardView,
                 gameViewController: self
             )
         } else {
-            let playerInputState = self.currentSate as! PlayerInputGameState
-            let player = playerInputState.player.next
-            
-            if player == .second, self.vsAI {
-                self.currentSate = ComputerInputGameState(
-                    gameboard: self.gameboard,
-                    gameView: self.gameboardView,
-                    gameViewController: self
-                )
-            } else {
-                self.currentSate = PlayerInputGameState(
-                    player: player,
-                    gameboard: self.gameboard,
-                    gameView: self.gameboardView,
-                    gameViewController: self
-                )
-            }
+            self.currentState = ComputerInputGameState(
+                gameboard: self.gameboard,
+                gameView: self.gameboardView,
+                gameViewController: self
+            )
         }
     }
     
