@@ -96,7 +96,7 @@ class ComputerInputGameState: GameState {
         self.isCompleted = true
     }
     
-    func minimax(gameboard: Gameboard, maximizing: Bool, player: Player) -> Int {
+    private func minimax(gameboard: Gameboard, maximizing: Bool, player: Player) -> Int {
         let referee = Referee(gameboard: gameboard)
         let emptyCells = gameboard.getEmptyPositions()
         
@@ -114,8 +114,10 @@ class ComputerInputGameState: GameState {
             
             for cell in emptyCells {
                 gameboard.setPlayer(player, at: cell)
+                
                 let result = minimax(gameboard: gameboard, maximizing: false, player: player.next)
                 bestEval = max(result, bestEval)
+                
                 gameboard.setEmpty(at: cell)
             }
             
@@ -125,8 +127,10 @@ class ComputerInputGameState: GameState {
             
             for cell in emptyCells {
                 gameboard.setPlayer(player, at: cell)
+                
                 let result = minimax(gameboard: gameboard, maximizing: true, player: player.next)
                 worstEval = min(result, worstEval)
+                
                 gameboard.setEmpty(at: cell)
             }
             
@@ -136,7 +140,7 @@ class ComputerInputGameState: GameState {
         
     }
     
-    func findBestMove(gameboard: Gameboard, player: Player) -> GameboardPosition? {
+    private func findBestMove(gameboard: Gameboard, player: Player) -> GameboardPosition? {
         var bestEval = Int.min
         var bestMove: GameboardPosition? = nil
         
@@ -144,11 +148,14 @@ class ComputerInputGameState: GameState {
         
         for cell in emptyCells {
             gameboard.setPlayer(player, at: cell)
+            
             let result = minimax(gameboard: gameboard, maximizing: false, player: player.next)
+            
             if result > bestEval {
                 bestEval = result
                 bestMove = cell
             }
+            
             gameboard.setEmpty(at: cell)
         }
         
