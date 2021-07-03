@@ -78,64 +78,81 @@ class ComputerInputGameState: GameState {
         self.gameViewController = gameViewController
     }
     
-    var position = GameboardPosition(column: 0, row: 0)
-    
     func begin() {
         self.gameViewController.firstPlayerTurnLabel.isHidden = true
         self.gameViewController.secondPlayerTurnLabel.isHidden = false
         
-        let markView = OView()
+        guard let position = findBestMove(gameboard: self.gameboard, player: .second) else { return }
         
-        _ = minimax(gameboard: self.gameboard, player: .second)
-        
-        self.gameView.placeMarkView(markView, at: position)
-        self.gameboard.setPlayer(.second, at: position)
-        
-        self.isCompleted = true
+        addMark(at: position)
         
         self.gameViewController.goToNextStateAI()
     }
     
-    func addMark(at position: GameboardPosition) { }
+    func addMark(at position: GameboardPosition) {
+        self.gameView.placeMarkView(OView(), at: position)
+        self.gameboard.setPlayer(.second, at: position)
+        
+        self.isCompleted = true
+    }
     
-    private func minimax(gameboard: Gameboard, player: Player) -> Int {
+    func minimax(gameboard: Gameboard, maximizing: Bool, player: Player) -> Int {
         let referee = Referee(gameboard: gameboard)
         let emptyCells = gameboard.getEmptyPositions()
         
         if let winner = referee.determineWinner() {
             switch winner {
-            case .first: return 10
-            case .second: return -10
+            case .first: return -1
+            case .second: return 1
             }
         } else if emptyCells.isEmpty {
             return 0
         }
         
-        var moves = [GameboardPosition : Int]()
+        if maximizing {
+            var bestEval = Int.min
+            
+            for cell in emptyCells {
+                gameboard.setPlayer(player, at: cell)
+                let result = minimax(gameboard: gameboard, maximizing: false, player: player.next)
+                bestEval = max(result, bestEval)
+                gameboard.setEmpty(at: cell)
+            }
+            
+            return bestEval
+        } else {
+            var worstEval = Int.max
+            
+            for cell in emptyCells {
+                gameboard.setPlayer(player, at: cell)
+                let result = minimax(gameboard: gameboard, maximizing: true, player: player.next)
+                worstEval = min(result, worstEval)
+                gameboard.setEmpty(at: cell)
+            }
+            
+            return worstEval
+        }
+        
+        
+    }
+    
+    func findBestMove(gameboard: Gameboard, player: Player) -> GameboardPosition? {
+        var bestEval = Int.min
+        var bestMove: GameboardPosition? = nil
+        
+        let emptyCells = gameboard.getEmptyPositions()
         
         for cell in emptyCells {
             gameboard.setPlayer(player, at: cell)
-            moves[cell] = minimax(gameboard: gameboard, player: player.next)
+            let result = minimax(gameboard: gameboard, maximizing: false, player: player.next)
+            if result > bestEval {
+                bestEval = result
+                bestMove = cell
+            }
             gameboard.setEmpty(at: cell)
         }
         
-        var bestScore = 0
-        switch player {
-        case .first:
-            bestScore = -10000;
-            for move in moves where move.value > bestScore {
-                self.position = move.key
-                bestScore = move.value
-            }
-        case .second:
-            bestScore = 10000;
-            for move in moves where move.value < bestScore {
-                self.position = move.key
-                bestScore = move.value
-            }
-        }
-        
-        return bestScore
+        return bestMove
     }
 }
 
@@ -174,7 +191,7 @@ class EndGameState: GameState {
         } else {
             return "Draw"
         }
-
+        
     }
 }
 

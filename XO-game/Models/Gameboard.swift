@@ -46,8 +46,8 @@ public final class Gameboard {
         var cells = [GameboardPosition]()
         
         for i in 0..<GameboardSize.rows {
-            for j in 0..<GameboardSize.columns where positions[i][j] == nil {
-                cells.append(GameboardPosition(column: i, row: j))
+            for j in 0..<GameboardSize.columns where positions[j][i] == nil {
+                cells.append(GameboardPosition(column: j, row: i))
             }
         }
         
