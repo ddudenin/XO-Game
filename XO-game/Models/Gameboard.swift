@@ -20,6 +20,10 @@ public final class Gameboard {
         positions[position.column][position.row] = player
     }
     
+    public func setEmpty(at position: GameboardPosition) {
+        positions[position.column][position.row] = nil
+    }
+    
     public func clear() {
         self.positions = initialPositions()
     }
@@ -36,6 +40,18 @@ public final class Gameboard {
     public func contains(player: Player, at position: GameboardPosition) -> Bool {
         let (column, row) = (position.column, position.row)
         return positions[column][row] == player
+    }
+    
+    public func getEmptyPositions() -> [GameboardPosition] {
+        var cells = [GameboardPosition]()
+        
+        for i in 0..<GameboardSize.rows {
+            for j in 0..<GameboardSize.columns where positions[j][i] == nil {
+                cells.append(GameboardPosition(column: j, row: i))
+            }
+        }
+        
+        return cells
     }
     
     // MARK: - Private
